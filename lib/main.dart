@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:flutter_zoom_drawer/config.dart';
 
 
 void main() {
@@ -16,7 +16,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final DrawerController = ZoomDrawerController();
+
   @override
-  Widget build(BuildContext context) =>
-     ZoomDrawer(menuScreen: PaymentPage(), mainScreen:  MenuPage());
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('widget.title'),
+      ),
+      body: Center(),
+    );
+  }
 }

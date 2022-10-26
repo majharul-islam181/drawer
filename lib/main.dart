@@ -2,8 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'menu_page.dart';
-import 'payment_page.dart';
+
 
 void main() {
   runApp(const MyApp());

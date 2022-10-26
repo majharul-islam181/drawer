@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+
 import 'package:flutter/material.dart';
 
 final Color backgroundColor = Color.fromARGB(255, 116, 99, 49);
@@ -11,10 +12,28 @@ class MenuDashBoardPage extends StatefulWidget {
   State<MenuDashBoardPage> createState() => _MenuDashBoardPageState();
 }
 
-class _MenuDashBoardPageState extends State<MenuDashBoardPage> {
+class _MenuDashBoardPageState extends State<MenuDashBoardPage>
+    with SingleTickerProviderStateMixin {
   bool isCollapsed = true;
-double screenWidth =0, screenHeight=0;
+  double screenWidth = 0, screenHeight = 0;
   Duration duration = const Duration(milliseconds: 300);
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: duration);
+    _scaleAnimation = Tween<double>(begin: 1, end: 0.6).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,44 +93,85 @@ double screenWidth =0, screenHeight=0;
 
   Widget dashboard(context) {
     return AnimatedPositioned(
-      top: 0.15 * screenHeight,
-      bottom: 0.2 * screenWidth,
-       left: 0.3 * screenHeight,
-       right: -0.1 * screenWidth,
+      top: 0,
+      bottom: 0,
+      left: isCollapsed ? 0 : 0.3 * screenHeight,
+      right: isCollapsed ? 0 : -0.1 * screenWidth,
       duration: duration,
-      child: Material(
-        elevation: 8,
-        color: backgroundColor,
-        child: Container(
-          padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    child: Icon(
-                      Icons.menu,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Material(
+          animationDuration: duration,
+          borderRadius: BorderRadius.all(Radius.circular(35.0)),
+          elevation: 8,
+          color: backgroundColor,
+          child: Container(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      child: Icon(
+                        Icons.menu,
+                        color: Colors.white,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          if (isCollapsed) {
+                            _controller.forward();
+                          } else {
+                            _controller.reverse(); 
+                          }
+                          isCollapsed = !isCollapsed;
+                        });
+                      },
+                    ),
+                    Text(
+                      'My Cards',
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
+                    Icon(
+                      Icons.settings,
                       color: Colors.white,
                     ),
-                    onTap: () {
-                      setState(() {
-                        isCollapsed = !isCollapsed;
-                      });
-                    },
+                  ],
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Container(
+                  height: 550,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: PageView(
+                      controller: PageController(viewportFraction: 0.8),
+                      scrollDirection: Axis.horizontal,
+                      pageSnapping: true,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                          color: Colors.redAccent,
+                          width: 100,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                          color: Color.fromARGB(255, 160, 196, 32),
+                          width: 100,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                          color: Color.fromARGB(255, 27, 25, 25),
+                          width: 100,
+                        )
+                      ],
+                    ),
                   ),
-                  Text(
-                    'My Cards',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  ),
-                  Icon(
-                    Icons.settings,
-                    color: Colors.white,
-                  ),
-                ],
-              )
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

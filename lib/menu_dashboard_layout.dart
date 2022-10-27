@@ -21,16 +21,15 @@ class _MenuDashBoardPageState extends State<MenuDashBoardPage>
   late Animation<Offset> _slideAnimation;
   late Animation<double> _menuslideAnimation;
 
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _controller = AnimationController(vsync: this, duration: duration);
     _scaleAnimation = Tween<double>(begin: 1, end: 0.6).animate(_controller);
-    _slideAnimation = Tween<Offset>(begin: Offset(-1,0), end: Offset(0,0)).animate(_controller);
+    _slideAnimation = Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))
+        .animate(_controller);
     _menuslideAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
-
   }
 
   @override
@@ -65,7 +64,7 @@ class _MenuDashBoardPageState extends State<MenuDashBoardPage>
             alignment: Alignment.centerLeft,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               // ignore: prefer_const_literals_to_create_immutables
               children: [
@@ -116,72 +115,97 @@ class _MenuDashBoardPageState extends State<MenuDashBoardPage>
           borderRadius: BorderRadius.all(Radius.circular(35.0)),
           elevation: 8,
           color: backgroundColor,
-          child: Container(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      child: Icon(
-                        Icons.menu,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            physics: ClampingScrollPhysics(),
+            child: Container(
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        child: Icon(
+                          Icons.menu,
+                          color: Colors.white,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            if (isCollapsed) {
+                              _controller.forward();
+                            } else {
+                              _controller.reverse();
+                            }
+                            isCollapsed = !isCollapsed;
+                          });
+                        },
+                      ),
+                      Text(
+                        'My Cards',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold),
+                      ),
+                      Icon(
+                        Icons.settings,
                         color: Colors.white,
                       ),
-                      onTap: () {
-                        setState(() {
-                          if (isCollapsed) {
-                            _controller.forward();
-                          } else {
-                            _controller.reverse();
-                          }
-                          isCollapsed = !isCollapsed;
-                        });
-                      },
-                    ),
-                    Text(
-                      'My Cards',
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                    Icon(
-                      Icons.settings,
-                      color: Colors.white,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                Container(
-                  height: 280,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: PageView(
-                      controller: PageController(viewportFraction: 0.8),
-                      scrollDirection: Axis.horizontal,
-                      pageSnapping: true,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                          color: Colors.redAccent,
-                          width: 100,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                          color: Color.fromARGB(255, 160, 196, 32),
-                          width: 100,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                          color: Color.fromARGB(255, 27, 25, 25),
-                          width: 100,
-                        )
-                      ],
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Container(
+                    height: 600,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: PageView(
+                        controller: PageController(viewportFraction: 0.8),
+                        scrollDirection: Axis.horizontal,
+                        pageSnapping: true,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                            color: Colors.redAccent,
+                            width: 100,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                            color: Color.fromARGB(255, 160, 196, 32),
+                            width: 100,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                            color: Color.fromARGB(255, 27, 25, 25),
+                            width: 100,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 22,
+                  ),
+                  Text('Transactions',style: TextStyle(color: Colors.white, fontSize: 20),),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text('Macbook'),
+                        subtitle: Text('Apple'),
+                        trailing: Text('-2900'),
+                      );
+                    },
+                    separatorBuilder: ((context, index) {
+                      return Divider(height: 16);
+                    }),itemCount: 10,
+                  )
+                ],
+              ),
             ),
           ),
         ),

@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-
 import 'package:flutter/material.dart';
 
 final Color backgroundColor = Color.fromARGB(255, 116, 99, 49);
@@ -19,6 +18,7 @@ class _MenuDashBoardPageState extends State<MenuDashBoardPage>
   Duration duration = const Duration(milliseconds: 300);
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
+  late Animation<Offset> _slideAnimation;
 
   @override
   void initState() {
@@ -26,6 +26,7 @@ class _MenuDashBoardPageState extends State<MenuDashBoardPage>
     super.initState();
     _controller = AnimationController(vsync: this, duration: duration);
     _scaleAnimation = Tween<double>(begin: 1, end: 0.6).animate(_controller);
+    _slideAnimation = Tween<Offset>(begin: Offset(-1,0), end: Offset(0,0)).animate(_controller);
   }
 
   @override
@@ -50,42 +51,45 @@ class _MenuDashBoardPageState extends State<MenuDashBoardPage>
   }
 
   Widget menu(context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15.0),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          // ignore: prefer_const_literals_to_create_immutables
-          children: [
-            Text(
-              "dashboard",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Text(
-              "Message",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Text(
-              'utiltity ',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Text(
-              'Funds Transfer ',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          ],
+    return SlideTransition(
+      position: _slideAnimation,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15.0),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            // ignore: prefer_const_literals_to_create_immutables
+            children: [
+              Text(
+                "dashboard",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                "Message",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                'utiltity ',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                'Funds Transfer ',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -122,7 +126,7 @@ class _MenuDashBoardPageState extends State<MenuDashBoardPage>
                           if (isCollapsed) {
                             _controller.forward();
                           } else {
-                            _controller.reverse(); 
+                            _controller.reverse();
                           }
                           isCollapsed = !isCollapsed;
                         });
@@ -143,7 +147,7 @@ class _MenuDashBoardPageState extends State<MenuDashBoardPage>
                   height: 20.0,
                 ),
                 Container(
-                  height: 550,
+                  height: 280,
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: PageView(

@@ -19,6 +19,8 @@ class _MenuDashBoardPageState extends State<MenuDashBoardPage>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<Offset> _slideAnimation;
+  late Animation<double> _menuslideAnimation;
+
 
   @override
   void initState() {
@@ -27,6 +29,8 @@ class _MenuDashBoardPageState extends State<MenuDashBoardPage>
     _controller = AnimationController(vsync: this, duration: duration);
     _scaleAnimation = Tween<double>(begin: 1, end: 0.6).animate(_controller);
     _slideAnimation = Tween<Offset>(begin: Offset(-1,0), end: Offset(0,0)).animate(_controller);
+    _menuslideAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
+
   }
 
   @override
@@ -53,42 +57,45 @@ class _MenuDashBoardPageState extends State<MenuDashBoardPage>
   Widget menu(context) {
     return SlideTransition(
       position: _slideAnimation,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 15.0),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            // ignore: prefer_const_literals_to_create_immutables
-            children: [
-              Text(
-                "dashboard",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Text(
-                "Message",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Text(
-                'utiltity ',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Text(
-                'Funds Transfer ',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            ],
+      child: ScaleTransition(
+        scale: _menuslideAnimation,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15.0),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // ignore: prefer_const_literals_to_create_immutables
+              children: [
+                Text(
+                  "dashboard",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Text(
+                  "Message",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Text(
+                  'utiltity ',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Text(
+                  'Funds Transfer ',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ],
+            ),
           ),
         ),
       ),
